@@ -1,0 +1,27 @@
+<script src="data/events.js"></script>
+<script>
+console.log(events);
+var map = {
+  "type": "FeatureCollection",
+};
+map.features = [];
+
+events.forEach(function(d,index){
+	if(typeof d.BEGIN_LAT != 'undefined' ||  d.BEGIN_LON != 'undefined' ){
+		var feature = {
+	      "type": "Feature",
+	      "properties": {"id":index},
+	      "id":index,
+	      "geometry": {
+	        "type": "Point",
+	        "coordinates": [
+	          d.BEGIN_LON*1,
+	          d.BEGIN_LAT*1
+	        ]
+	      }
+	    }
+	    map.features.push(feature);
+	}	
+})
+console.log(JSON.stringify(map));
+</script>

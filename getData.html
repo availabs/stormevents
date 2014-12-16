@@ -1,0 +1,91 @@
+<html>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+var beginYear =2012,
+	endYear=2014,
+	beginDay=01,
+	endDay=31;
+	month = 1;
+	endMonth = 1;
+	currYear = 2013;
+	currMonth = 1;
+	currBegin = 1;
+	currEnd = 1;
+
+var output = [];
+var totalCount = 0,
+	currentCount = 0;
+for(month = 1;month <= 12; month++){ 
+
+
+	currYear = beginYear; //set current year
+	currMonth = month; //current month + 1 for begin+D
+
+
+	endMonth = month;
+
+	var begin_d= new Date(currYear,currMonth,0); //get date for last day in month
+	endDay = begin_d.getDate();
+	currEnd = endDay;
+
+
+	if(month<10){ //make month 2 digits
+		month = ('0'+ month)
+	}
+
+
+	if(endMonth < 10){
+		endMonth = ('0' + endMonth).slice(-2);
+	}
+
+	for(beginDay = 1; beginDay < endDay; beginDay++){
+
+		totalCount++;
+		if(beginDay < 10){ //make days two digets
+			currBegin = ('0' + beginDay)
+
+		}
+
+		var nextDay = (+currBegin+1);
+		if(nextDay < 10){ //make days two digets
+			nextDay = ('0' + nextDay)
+
+		}
+		
+		console.log(month,currBegin,beginYear,nextDay);
+		//var url = ;
+		'?eventType=ALL&beginDate_mm=06&beginDate_dd=01&beginDate_yyyy=2014&endDate_mm=06&endDate_dd=30&endDate_yyyy=2014'
+		'?beginDate_mm=12&beginDate_dd=7&beginDate_yyyy=2012&endDate_mm=12&endDate_dd=08&endDate_yyyy=2012'
+		d3.csv('http://www.ncdc.noaa.gov/stormevents/csv?'+
+				  'eventType=ALL&county=ALL&hailfilter=0.00&tornfilter=0&windfilter=000&sort=DT&submitbutton=Search&statefips=36%2CNEW+YORK'+
+				  '&beginDate_mm='+month+'&beginDate_dd='+currBegin+'&beginDate_yyyy='+beginYear+'&endDate_mm='+month+'&endDate_dd='+nextDay+'&endDate_yyyy='+beginYear,function(err,data,res){
+			if(err) { console.log(err) }
+			else{
+				currentCount++;
+				data.forEach(function(d){
+					output.push(d);
+				})
+
+			}
+			if(currentCount == totalCount){
+				d3.select('body').html(JSON.stringify(output));
+			}
+	
+		})
+	
+	} //end day loop
+
+	// if(month == 12){ // next year!
+	// 	if(currYear != 2013){ //ignoring 2014 for now
+	// 		month = 1;
+	// 		currYear++;
+	// 	}
+	// }
+
+} //end month loop
+console.log('the data',output);
+</script>
+<body>
+ Hello World
+</body>
+</html>
