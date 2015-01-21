@@ -1,0 +1,21 @@
+<script src='bower_components/d3/d3.min.js'></script>
+<script>
+	var output = [],
+		year = 2008,
+		count = 0;;
+
+	for(;year<2014;year++){
+		d3.json('data/storms'+year+'.json',function(data){
+			data.forEach(function(row){
+				output.push(row);
+			})
+			count++;
+			if(count == 6){
+				console.log('--------------------------------------------------------------')
+				console.log('done',output.length,output)
+			}
+		})
+	}
+	
+
+</script>
